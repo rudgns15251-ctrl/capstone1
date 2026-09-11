@@ -111,7 +111,7 @@ Prototype 검증 후 전체 게임 개발에서 다룰 대상이다. 구체 구�
 
 ## 5. 프로젝트 폴더
 
-아래는 각 Milestone에서 필요한 때 생성할 경로다. 이번 설계 단계에서는 `.gd`, `.tscn`, `project.godot`, 콘텐츠 JSON을 생성하지 않는다.
+아래는 각 Milestone에서 필요한 때 생성할 경로다. M1에서는 Main/Desktop, Browser/PostOne/S-LINK의 최소 화면과 세션·콘텐츠 로딩 파일만 생성했으며, 이후 경로는 해당 Milestone에서 필요할 때 추가한다.
 
 | 경로 | 용도 |
 |---|---|

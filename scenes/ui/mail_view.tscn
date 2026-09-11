@@ -1,0 +1,136 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/mail_view.gd" id="1_mail"]
+
+[node name="MailView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mail")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="PanelContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="HeaderMargin" type="MarginContainer" parent="Layout/Header"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="HeaderTitle" type="Label" parent="Layout/Header/HeaderMargin"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.47, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 26
+text = "PostOne  /  받은 메일"
+
+[node name="Mailbox" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="InboxPanel" type="PanelContainer" parent="Layout/Mailbox"]
+custom_minimum_size = Vector2(330, 0)
+layout_mode = 2
+
+[node name="InboxMargin" type="MarginContainer" parent="Layout/Mailbox/InboxPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="InboxColumn" type="VBoxContainer" parent="Layout/Mailbox/InboxPanel/InboxMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="InboxLabel" type="Label" parent="Layout/Mailbox/InboxPanel/InboxMargin/InboxColumn"]
+layout_mode = 2
+text = "받은 메일 (1)"
+
+[node name="InboxButton" type="Button" parent="Layout/Mailbox/InboxPanel/InboxMargin/InboxColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "새 메일"
+alignment = 0
+autowrap_mode = 3
+
+[node name="BodySurface" type="PanelContainer" parent="Layout/Mailbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EmptyMessage" type="Label" parent="Layout/Mailbox/BodySurface"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "왼쪽의 새 메일을 열어 의뢰 내용을 확인하세요."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="MailBody" type="MarginContainer" parent="Layout/Mailbox/BodySurface"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="BodyColumn" type="VBoxContainer" parent="Layout/Mailbox/BodySurface/MailBody"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SubjectLabel" type="Label" parent="Layout/Mailbox/BodySurface/MailBody/BodyColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "제목"
+autowrap_mode = 3
+
+[node name="SenderLabel" type="Label" parent="Layout/Mailbox/BodySurface/MailBody/BodyColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "보낸 사람"
+
+[node name="ReceivedLabel" type="Label" parent="Layout/Mailbox/BodySurface/MailBody/BodyColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "받은 시각"
+
+[node name="IdentityLabel" type="Label" parent="Layout/Mailbox/BodySurface/MailBody/BodyColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "받는 계정"
+
+[node name="Separator" type="HSeparator" parent="Layout/Mailbox/BodySurface/MailBody/BodyColumn"]
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="Layout/Mailbox/BodySurface/MailBody/BodyColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BodyText" type="RichTextLabel" parent="Layout/Mailbox/BodySurface/MailBody/BodyColumn/Scroll"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 280)
+layout_mode = 2
+size_flags_horizontal = 3
+fit_content = true
+scroll_active = false
+text = "메일 본문"
+
+[node name="FindOnButton" type="Button" parent="Layout/Mailbox/BodySurface/MailBody/BodyColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 46)
+text = "FindOn에서 조사 시작"

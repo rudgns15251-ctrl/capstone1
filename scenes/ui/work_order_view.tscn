@@ -1,0 +1,108 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/work_order_view.gd" id="1_work_order"]
+
+[node name="WorkOrderView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_work_order")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 16
+
+[node name="Column" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="ServiceTitle" type="Label" parent="Panel/Margin/Column"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.47, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 26
+text = "S-LINK  /  업무 명세"
+
+[node name="MissionIdLabel" type="Label" parent="Panel/Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.75, 0.84, 1)
+text = "WORK ORDER"
+
+[node name="MissionTitleLabel" type="Label" parent="Panel/Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "업무 제목"
+
+[node name="MissionSummaryLabel" type="Label" parent="Panel/Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "업무 설명"
+autowrap_mode = 3
+
+[node name="Details" type="HBoxContainer" parent="Panel/Margin/Column"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 28
+
+[node name="ScopeColumn" type="VBoxContainer" parent="Panel/Margin/Column/Details"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 7
+
+[node name="ScopeHeading" type="Label" parent="Panel/Margin/Column/Details/ScopeColumn"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.47, 0.82, 1, 1)
+text = "처리 범위"
+
+[node name="ScopeList" type="RichTextLabel" parent="Panel/Margin/Column/Details/ScopeColumn"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 118)
+layout_mode = 2
+size_flags_vertical = 3
+fit_content = true
+scroll_active = false
+
+[node name="AccountColumn" type="VBoxContainer" parent="Panel/Margin/Column/Details"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 7
+
+[node name="AccountHeading" type="Label" parent="Panel/Margin/Column/Details/AccountColumn"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.47, 0.82, 1, 1)
+text = "업무 계정"
+
+[node name="AccountList" type="RichTextLabel" parent="Panel/Margin/Column/Details/AccountColumn"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_vertical = 3
+fit_content = true
+scroll_active = false
+
+[node name="Notice" type="Label" parent="Panel/Margin/Column"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.7, 0.76, 1)
+text = "현재는 업무 범위 확인만 가능합니다. 조사한 대상의 등록과 처리는 아직 사용할 수 없습니다."
+autowrap_mode = 3
+
+[node name="FindOnButton" type="Button" parent="Panel/Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 46)
+text = "FindOn으로 이동"

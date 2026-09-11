@@ -1,0 +1,108 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/browser.gd" id="1_browser"]
+[ext_resource type="PackedScene" path="res://scenes/ui/work_order_view.tscn" id="2_work_order"]
+
+[node name="Browser" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_browser")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Toolbar" type="PanelContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="ToolbarMargin" type="MarginContainer" parent="Layout/Toolbar"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="ToolbarRow" type="HBoxContainer" parent="Layout/Toolbar/ToolbarMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="FindOnButton" type="Button" parent="Layout/Toolbar/ToolbarMargin/ToolbarRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "FindOn"
+
+[node name="SLinkButton" type="Button" parent="Layout/Toolbar/ToolbarMargin/ToolbarRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "S-LINK"
+
+[node name="AddressField" type="LineEdit" parent="Layout/Toolbar/ToolbarMargin/ToolbarRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+editable = false
+text = "https://findon.invalid/"
+
+[node name="Content" type="PanelContainer" parent="Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FindOnPanel" type="MarginContainer" parent="Layout/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 36
+
+[node name="FindOnColumn" type="VBoxContainer" parent="Layout/Content/FindOnPanel"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="Layout/Content/FindOnPanel/FindOnColumn"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.29, 0.66, 0.95, 1)
+theme_override_font_sizes/font_size = 42
+text = "FindOn"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Layout/Content/FindOnPanel/FindOnColumn"]
+layout_mode = 2
+text = "관리되는 업무 환경용 검색 서비스"
+horizontal_alignment = 1
+
+[node name="SearchRow" type="HBoxContainer" parent="Layout/Content/FindOnPanel/FindOnColumn"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SearchField" type="LineEdit" parent="Layout/Content/FindOnPanel/FindOnColumn/SearchRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "검색 기능은 다음 Milestone에서 사용할 수 있습니다."
+editable = false
+
+[node name="SearchButton" type="Button" parent="Layout/Content/FindOnPanel/FindOnColumn/SearchRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 0)
+disabled = true
+text = "검색"
+
+[node name="Info" type="Label" parent="Layout/Content/FindOnPanel/FindOnColumn"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.68, 0.76, 1)
+text = "SR-001 조사 시작 화면입니다. PostOne에서 의뢰 범위를 확인하고 S-LINK에서 업무 계정을 확인하세요."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="WorkOrderView" parent="Layout/Content" instance=ExtResource("2_work_order")]
+unique_name_in_owner = true
+layout_mode = 2
+visible = false
