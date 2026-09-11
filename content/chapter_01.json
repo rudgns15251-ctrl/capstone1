@@ -18,6 +18,189 @@
     "initial_mail_id": "sr001_initial",
     "findon_route": "https://findon.invalid/"
   },
+  "sites": [
+    {
+      "site_id": "talkboard",
+      "label": "TalkBoard",
+      "header_color": "#79b8ff"
+    },
+    {
+      "site_id": "picbox",
+      "label": "PicBox",
+      "header_color": "#ffbf69"
+    },
+    {
+      "site_id": "myroom",
+      "label": "MyRoom",
+      "header_color": "#ff8fab"
+    }
+  ],
+  "images": [
+    {
+      "image_id": "img_picbox_original",
+      "texture_path": "res://assets/images/ch01_facility.png",
+      "filename": "facility_c_night_0418.jpg",
+      "uploader": "blueframe",
+      "source_label": "PicBox 원본"
+    },
+    {
+      "image_id": "img_myroom_copy",
+      "texture_path": "res://assets/images/ch01_facility.png",
+      "filename": "night_shift_copy.jpg",
+      "uploader": "blueframe",
+      "source_label": "MyRoom 재업로드",
+      "origin_image_id": "img_picbox_original"
+    }
+  ],
+  "pages": [
+    {
+      "page_id": "talkboard_post",
+      "site_id": "talkboard",
+      "route": "https://talkboard.invalid/posts/8142",
+      "title": "세린생명과학 연구시설 사진 — 야간 작업?",
+      "author": "blueframe",
+      "display_date": "2004-04-19 00:37",
+      "search_terms": ["세린생명과학", "연구시설", "직원 개인정보", "직원 이름", "사진", "냉동차", "blueframe"],
+      "search_aliases": ["세린 생명과학", "연구동", "개인정보 노출", "야간 차량"],
+      "search_summary": "연구시설 앞 야간 사진에 직원 이름과 냉동 운송 차량이 함께 보인다는 게시물.",
+      "search_image_id": "img_picbox_original",
+      "blocks": [
+        {
+          "block_id": "tb_intro",
+          "type": "text",
+          "text": "연구시설 근처를 지나가다 찍었습니다. 늦은 시간인데도 흰색 냉동차가 하역장에 들어와 있네요."
+        },
+        {
+          "block_id": "tb_employee_name",
+          "type": "redactable_text",
+          "prefix": "사진 왼쪽 출입증에는 직원 이름 ",
+          "value": "김도현",
+          "suffix": "이 그대로 보입니다.",
+          "redacted_value": "김○○"
+        },
+        {
+          "block_id": "tb_linked_photo",
+          "type": "image",
+          "image_id": "img_picbox_original",
+          "source_route": "https://picbox.invalid/image/pb-0418-c"
+        },
+        {
+          "block_id": "tb_source_link",
+          "type": "link",
+          "label": "PicBox에서 원본과 파일 정보 보기",
+          "route": "https://picbox.invalid/image/pb-0418-c"
+        },
+        {
+          "block_id": "tb_comment_1",
+          "type": "comment",
+          "author": "nightowl77",
+          "text": "밤에도 배송 차량이 들어오나 보네요."
+        }
+      ]
+    },
+    {
+      "page_id": "picbox_original",
+      "site_id": "picbox",
+      "route": "https://picbox.invalid/image/pb-0418-c",
+      "title": "facility_c_night_0418.jpg",
+      "author": "blueframe",
+      "display_date": "2004-04-18 23:54",
+      "search_terms": ["facility_c_night_0418.jpg", "blueframe", "세린생명과학", "연구시설", "사진", "냉동차"],
+      "search_aliases": ["facility c night 0418", "원본 사진", "C동 사진"],
+      "search_summary": "blueframe이 올린 원본 사진. 파일명과 업로드 시각을 확인할 수 있다.",
+      "search_image_id": "img_picbox_original",
+      "blocks": [
+        {
+          "block_id": "pb_description",
+          "type": "text",
+          "text": "원본 크기 사진입니다. 배경의 C동 표기와 하역장 냉동 차량, 왼쪽 출입증을 확인할 수 있습니다."
+        },
+        {
+          "block_id": "pb_original_photo",
+          "type": "image",
+          "image_id": "img_picbox_original"
+        }
+      ]
+    },
+    {
+      "page_id": "myroom_home",
+      "site_id": "myroom",
+      "route": "https://myroom.invalid/blueframe",
+      "title": "blueframe의 MyRoom",
+      "author": "blueframe",
+      "display_date": "최근 갱신 2004-05-02",
+      "search_terms": ["blueframe", "개인 홈페이지", "사진", "facility_c_night_0418.jpg"],
+      "search_aliases": ["blue frame", "마이룸", "개인 홈"],
+      "search_summary": "blueframe의 개인 홈페이지. PHOTO와 DIARY 기록이 남아 있다.",
+      "blocks": [
+        {
+          "block_id": "mr_home_intro",
+          "type": "text",
+          "text": "사진과 짧은 기록을 모아 두는 개인 페이지입니다."
+        },
+        {
+          "block_id": "mr_photo_link",
+          "type": "link",
+          "label": "PHOTO — 최근 사진 보기",
+          "route": "https://myroom.invalid/blueframe/photo/27"
+        },
+        {
+          "block_id": "mr_diary_link",
+          "type": "link",
+          "label": "DIARY — 예전 기록 보기",
+          "route": "https://myroom.invalid/blueframe/diary/12"
+        }
+      ]
+    },
+    {
+      "page_id": "myroom_photo",
+      "site_id": "myroom",
+      "route": "https://myroom.invalid/blueframe/photo/27",
+      "title": "연구동 앞에서 찍은 밤 사진",
+      "author": "blueframe",
+      "display_date": "2004-04-20 01:08",
+      "search_terms": ["blueframe", "facility_c_night_0418.jpg", "연구동", "C동", "사진", "냉동차"],
+      "search_aliases": ["blue frame", "야간 사진", "재업로드"],
+      "search_summary": "blueframe의 PHOTO에 다시 올라온 연구동 야간 사진.",
+      "search_image_id": "img_myroom_copy",
+      "blocks": [
+        {
+          "block_id": "mr_photo_note",
+          "type": "text",
+          "text": "다른 곳에 올렸던 사진을 개인 사진첩에도 복사해 두었다. 원본 파일명: facility_c_night_0418.jpg"
+        },
+        {
+          "block_id": "mr_reuploaded_photo",
+          "type": "image",
+          "image_id": "img_myroom_copy"
+        },
+        {
+          "block_id": "mr_photo_comment",
+          "type": "comment",
+          "author": "frameguest",
+          "text": "사진 왼쪽이 너무 가까워서 출입증까지 보이네요."
+        }
+      ]
+    },
+    {
+      "page_id": "myroom_diary",
+      "site_id": "myroom",
+      "route": "https://myroom.invalid/blueframe/diary/12",
+      "title": "요즘 새벽 차량",
+      "author": "blueframe",
+      "display_date": "2004-03-29 04:26",
+      "search_terms": ["blueframe", "C동", "새벽 차량", "냉동차", "연구동"],
+      "search_aliases": ["새벽 4시", "야간 차량", "C 동"],
+      "search_summary": "C동 쪽으로 들어가는 새벽 냉동 차량에 관한 짧은 기록.",
+      "blocks": [
+        {
+          "block_id": "mr_diary_body",
+          "type": "text",
+          "text": "요즘 새벽 네 시쯤이면 흰색 냉동차가 C동 뒤편으로 들어간다. 정문보다 하역장 쪽을 쓰는 날이 더 많은 것 같다."
+        }
+      ]
+    }
+  ],
   "mails": [
     {
       "mail_id": "sr001_initial",
@@ -37,6 +220,8 @@
   ],
   "authoring_notes": [
     "work_identity의 표시값과 업무용 메일 주소는 Prototype용 임시값이다.",
-    "가상 주소는 .invalid 도메인을 사용하며 외부 네트워크로 전송하지 않는다."
+    "가상 주소는 .invalid 도메인을 사용하며 외부 네트워크로 전송하지 않는다.",
+    "직원 이름 김도현, 파일명, 게시 시각, 댓글 문구는 Chapter 1 Prototype의 임시 표시값이다.",
+    "blueframe의 정확한 고용 형태나 물리적 행방은 이 데이터에서 확정하지 않는다."
   ]
 }

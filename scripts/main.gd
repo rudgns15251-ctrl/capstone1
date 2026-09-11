@@ -28,12 +28,14 @@ func _ready() -> void:
 
 	user_label.text = "%s  |  %s" % [identity.get("username", ""), identity.get("access_level", "")]
 	mail_view.configure(initial_mail, identity, session_state.mission_read)
-	browser.configure(mission, identity)
+	browser.configure(catalog, mission, identity)
 
 	postone_button.pressed.connect(_show_mail)
 	browser_button.pressed.connect(_show_browser)
 	mail_view.mission_opened.connect(_on_mission_opened)
 	mail_view.findon_requested.connect(_on_findon_requested)
+	browser.page_visited.connect(session_state.mark_page_visited)
+	browser.content_observed.connect(session_state.mark_content_observed)
 	session_state.mission_read_changed.connect(mail_view.set_read_state)
 
 	_show_mail()
