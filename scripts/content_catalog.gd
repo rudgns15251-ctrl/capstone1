@@ -69,6 +69,10 @@ func get_image(image_id: String) -> Dictionary:
 	return _images_by_id.get(image_id, {}).duplicate(true)
 
 
+func get_search_candidates() -> Array:
+	return _chapter.get("search_candidates", []).duplicate(true)
+
+
 func search_pages(query: String) -> Array:
 	var tokens := _tokenize(query)
 	if tokens.is_empty():
@@ -148,7 +152,7 @@ func _validate_data() -> bool:
 	if initial_mail["link_route"] != mission["findon_route"]:
 		return _fail("초기 메일 링크와 mission.findon_route가 일치하지 않습니다.")
 
-	for section_name in ["sites", "pages", "images"]:
+	for section_name in ["sites", "pages", "images", "search_candidates"]:
 		if typeof(_chapter.get(section_name)) != TYPE_ARRAY:
 			return _fail("필수 배열이 없거나 형식이 잘못되었습니다: %s" % section_name)
 
@@ -226,6 +230,40 @@ func _validate_data() -> bool:
 			var origin_id := str(image["origin_image_id"])
 			if origin_id == str(image["image_id"]) or not image_ids.has(origin_id):
 				return _fail("잘못된 origin_image_id(%s): %s" % [image["image_id"], origin_id])
+
+	var candidate_ids: Dictionary = {}
+	var candidate_texts: Dictionary = {}
+	for candidate_value in _chapter["search_candidates"]:
+		if typeof(candidate_value) != TYPE_DICTIONARY:
+			return _fail("search_candidates 항목은 객체여야 합니다.")
+		var candidate: Dictionary = candidate_value
+		for key in ["candidate_id", "text", "unlock_type"]:
+			if not _require_non_empty_string(candidate, key, "search_candidates"):
+				return false
+		var candidate_id := str(candidate["candidate_id"])
+		var candidate_text := str(candidate["text"])
+		if candidate_ids.has(candidate_id):
+			return _fail("중복 candidate_id: %s" % candidate_id)
+		if candidate_texts.has(candidate_text):
+			return _fail("중복 검색 후보 문자열: %s" % candidate_text)
+		candidate_ids[candidate_id] = true
+		candidate_texts[candidate_text] = true
+		match str(candidate["unlock_type"]):
+			"mission_read":
+				pass
+			"visited_page":
+				if not _require_non_empty_string(candidate, "unlock_id", "search_candidates.%s" % candidate_id):
+					return false
+				if not page_ids.has(str(candidate["unlock_id"])):
+					return _fail("검색 후보가 없는 page_id를 참조합니다(%s): %s" % [candidate_id, candidate["unlock_id"]])
+			"observed_content":
+				if not _require_non_empty_string(candidate, "unlock_id", "search_candidates.%s" % candidate_id):
+					return false
+				var unlock_id := str(candidate["unlock_id"])
+				if not block_ids.has(unlock_id) and not image_ids.has(unlock_id):
+					return _fail("검색 후보가 없는 content ID를 참조합니다(%s): %s" % [candidate_id, unlock_id])
+			_:
+				return _fail("지원하지 않는 검색 후보 unlock_type(%s): %s" % [candidate_id, candidate["unlock_type"]])
 
 	for page_value in _chapter["pages"]:
 		var page: Dictionary = page_value

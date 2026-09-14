@@ -158,7 +158,7 @@ ContentCatalog와 SessionState는 Main이 소유하는 RefCounted 객체다. Sce
 
 - 상단: 뒤로/앞으로, 주소 입력, 이동, 주소 복사, FindOn 이동, S-LINK 이동.
 - 본문: FindOn 검색 패널, WebPageView, WorkOrderView 중 현재 주소에 해당하는 하나.
-- 검색 패널: 검색 입력, 결과 제목·요약·주소·필요한 썸네일, 빈 결과 안내.
+- 검색 패널: 현재 조사 상태로 해금된 검색 후보, 자동 타이핑되는 읽기 전용 검색창, 결과 제목·요약·주소·필요한 썸네일, 빈 결과 안내. 후보 타이핑이 끝나면 기존 고정 규칙 검색을 호출한다.
 - 주소는 게임 데이터 내부에서만 해석한다. 표시 주소는 가상 `.invalid` 도메인으로 두되, 정확한 주소 문자열은 임시 콘텐츠다.
 - 실제 웹브라우저를 열거나 외부 네트워크로 전달하지 않는다.
 - 이동 기록은 route/query/scroll 값이다. 렌더링된 Scene의 스냅샷을 저장하지 않는다.
@@ -220,6 +220,7 @@ ContentCatalog와 SessionState는 Main이 소유하는 RefCounted 객체다. Sce
 | pages | page_id, site_id, route, title, author, author_route, 표시용 날짜(필요한 경우), blocks, search_terms, search_aliases, search_summary, search_image_id(있는 경우) |
 | blocks | block_id, type, 유형별 내용. 처리 대상 텍스트는 원문 부분과 비식별 결과를 분리 |
 | images | image_id, texture_path, filename, 표시용 업로더/출처, origin_image_id(재업로드 관계) |
+| search_candidates | candidate_id, 표시/검색 문자열, unlock_type, 방문 페이지 또는 관찰 콘텐츠 unlock_id(필요한 경우) |
 | mails | mail_id, sender, subject, body, 기존 화면으로 가는 링크, 표시 조건(initial 또는 reported) |
 | mission | mission_id, title, 업무 설명, required_targets, initial_mail_id, reply_mail_id |
 | required_targets | target_id, page_id, block_id 또는 image_id, allowed_action(redact/delete_image), 수정 결과(필요한 경우) |
@@ -242,7 +243,7 @@ ContentCatalog와 SessionState는 Main이 소유하는 RefCounted 객체다. Sce
 
 - 콘텐츠 페이지 5개(필수 4개, 선택 1개), FindOn 결과는 동적 목록, S-LINK와 PostOne은 기능 화면이다.
 - 따라서 서비스 이름은 FindOn·TalkBoard·PicBox·MyRoom·S-LINK·PostOne의 6개지만, 6개 웹앱을 따로 만드는 것이 아니다.
-- 첫 의뢰 메일 1개 + 완료 답신 1개. 댓글은 STORY.md에 구체적인 필수 단서가 없으므로 있어도 평범한 짧은 문장으로 제한하며 새로운 사실을 넣지 않는다.
+- 첫 의뢰 메일 1개 + 완료 답신 1개. 댓글은 STORY.md에 구체적인 필수 단서가 없으므로 있어도 평범한 짧은 문장으로 제한하며 새로운 사실을 넣지 않는다. 일반 댓글 작성자는 `guest`로 표시하고, 조사에 필요한 고유 닉네임만 콘텐츠 데이터에 유지한다.
 - 시각 사진 1종, 원본/재업로드 이미지 기록 2개, 검색 썸네일은 파생 표시다.
 - MyRoom의 GUEST/LINK 전체 탭·새 사용자·무관한 검색용 사이트를 채우지 않는다. 기능 없는 클릭 요소로 탐색을 낚지 않는다.
 

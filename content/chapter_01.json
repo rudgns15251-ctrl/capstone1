@@ -52,6 +52,25 @@
 	  "origin_image_id": "img_picbox_original"
 	}
   ],
+  "search_candidates": [
+	{
+	  "candidate_id": "initial_request",
+	  "text": "세린생명과학 개인정보",
+	  "unlock_type": "mission_read"
+	},
+	{
+	  "candidate_id": "talkboard_author",
+	  "text": "blueframe",
+	  "unlock_type": "visited_page",
+	  "unlock_id": "talkboard_post"
+	},
+	{
+	  "candidate_id": "original_filename",
+	  "text": "facility_c_night_0418.jpg",
+	  "unlock_type": "observed_content",
+	  "unlock_id": "img_picbox_original"
+	}
+  ],
   "pages": [
 	{
 	  "page_id": "talkboard_post",
@@ -93,7 +112,7 @@
 		{
 		  "block_id": "tb_comment_1",
 		  "type": "comment",
-		  "author": "nightowl77",
+		  "author": "guest",
 		  "text": "밤에도 배송 차량이 들어오나 보네요."
 		}
 	  ]
@@ -177,7 +196,7 @@
 		{
 		  "block_id": "mr_photo_comment",
 		  "type": "comment",
-		  "author": "frameguest",
+		  "author": "guest",
 		  "text": "사진 왼쪽이 너무 가까워서 출입증까지 보이네요."
 		}
 	  ]

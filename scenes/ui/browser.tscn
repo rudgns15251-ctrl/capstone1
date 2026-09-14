@@ -103,6 +103,17 @@ layout_mode = 2
 text = "관리되는 업무 환경용 검색 서비스"
 horizontal_alignment = 1
 
+[node name="CandidateLabel" type="Label" parent="Layout/Content/FindOnPanel/FindOnColumn"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.68, 0.76, 1)
+text = "조사 중 확인한 검색어"
+
+[node name="SearchCandidateButtons" type="HFlowContainer" parent="Layout/Content/FindOnPanel/FindOnColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 6
+
 [node name="SearchRow" type="HBoxContainer" parent="Layout/Content/FindOnPanel/FindOnColumn"]
 layout_mode = 2
 theme_override_constants/separation = 8
@@ -111,12 +122,14 @@ theme_override_constants/separation = 8
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "세린생명과학, blueframe, 파일명으로 검색"
+placeholder_text = "위 검색 후보를 선택하세요"
+editable = false
 
 [node name="SearchButton" type="Button" parent="Layout/Content/FindOnPanel/FindOnColumn/SearchRow"]
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(100, 0)
+disabled = true
 text = "검색"
 
 [node name="SearchStatus" type="Label" parent="Layout/Content/FindOnPanel/FindOnColumn"]

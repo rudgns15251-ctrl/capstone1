@@ -28,7 +28,7 @@ func _ready() -> void:
 
 	user_label.text = "%s  |  %s" % [identity.get("username", ""), identity.get("access_level", "")]
 	mail_view.configure(initial_mail, identity, session_state.mission_read)
-	browser.configure(catalog, mission, identity)
+	browser.configure(catalog, session_state, mission, identity)
 
 	postone_button.pressed.connect(_show_mail)
 	browser_button.pressed.connect(_show_browser)
@@ -52,6 +52,7 @@ func _show_mail() -> void:
 func _show_browser() -> void:
 	mail_view.visible = false
 	browser.visible = true
+	browser.refresh_search_candidates()
 	system_message.text = "BROWSER  |  관리되는 업무 환경"
 
 

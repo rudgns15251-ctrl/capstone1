@@ -5,6 +5,9 @@ signal route_changed(route: String)
 signal page_visited(page_id: String)
 signal content_observed(content_id: String)
 
+@export_range(0.01, 0.2, 0.005) var search_typing_interval_seconds: float = 0.045
+@export_range(0.0, 1.0, 0.05) var search_submit_delay_seconds: float = 0.25
+
 @onready var back_button: Button = %BackButton
 @onready var forward_button: Button = %ForwardButton
 @onready var address_field: LineEdit = %AddressField
@@ -21,6 +24,7 @@ signal content_observed(content_id: String)
 @onready var search_field: LineEdit = %SearchField
 @onready var search_button: Button = %SearchButton
 @onready var search_status: Label = %SearchStatus
+@onready var search_candidate_buttons: HFlowContainer = %SearchCandidateButtons
 @onready var search_scroll: ScrollContainer = %SearchScroll
 @onready var search_results: VBoxContainer = %SearchResults
 
@@ -28,8 +32,10 @@ var current_route: String = ""
 var _findon_route: String = "https://findon.invalid/"
 var _work_order_route: String = "https://s-link.invalid/work-orders/SR-001"
 var _catalog: ContentCatalog
+var _session_state: SessionState
 var _history: Array = []
 var _history_index: int = -1
+var _typing_generation: int = 0
 
 
 func _ready() -> void:
@@ -42,14 +48,13 @@ func _ready() -> void:
 	slink_button.pressed.connect(open_work_order)
 	work_order_view.findon_requested.connect(open_findon)
 	unknown_findon_button.pressed.connect(open_findon)
-	search_button.pressed.connect(_submit_search)
-	search_field.text_submitted.connect(func(_value: String) -> void: _submit_search())
 	web_page_view.link_requested.connect(navigate_to_route)
 	web_page_view.content_observed.connect(func(content_id: String) -> void: content_observed.emit(content_id))
 
 
-func configure(catalog: ContentCatalog, mission: Dictionary, identity: Dictionary) -> void:
+func configure(catalog: ContentCatalog, session_state: SessionState, mission: Dictionary, identity: Dictionary) -> void:
 	_catalog = catalog
+	_session_state = session_state
 	_findon_route = str(mission.get("findon_route", _findon_route))
 	_work_order_route = "https://s-link.invalid/work-orders/%s" % mission.get("mission_id", "SR-001")
 	work_order_view.configure(mission, identity)
@@ -60,14 +65,17 @@ func configure(catalog: ContentCatalog, mission: Dictionary, identity: Dictionar
 
 
 func open_findon() -> void:
+	_cancel_auto_search()
 	_push_entry({"kind": "findon", "route": _findon_route, "query": "", "scroll": 0})
 
 
 func open_work_order() -> void:
+	_cancel_auto_search()
 	_push_entry({"kind": "work_order", "route": _work_order_route, "scroll": 0})
 
 
 func navigate_to_route(route_value: String) -> void:
+	_cancel_auto_search()
 	var route := route_value.strip_edges()
 	if route == _findon_route:
 		open_findon()
@@ -83,6 +91,7 @@ func navigate_to_route(route_value: String) -> void:
 
 
 func submit_search(query: String) -> void:
+	_cancel_auto_search()
 	search_field.text = query
 	_submit_search()
 
@@ -90,6 +99,7 @@ func submit_search(query: String) -> void:
 func go_back() -> void:
 	if _history_index <= 0:
 		return
+	_cancel_auto_search()
 	_capture_current_scroll()
 	_history_index -= 1
 	_render_current_entry()
@@ -98,6 +108,7 @@ func go_back() -> void:
 func go_forward() -> void:
 	if _history_index >= _history.size() - 1:
 		return
+	_cancel_auto_search()
 	_capture_current_scroll()
 	_history_index += 1
 	_render_current_entry()
@@ -105,6 +116,11 @@ func go_forward() -> void:
 
 func get_history_size() -> int:
 	return _history.size()
+
+
+func refresh_search_candidates() -> void:
+	if is_instance_valid(findon_panel) and findon_panel.visible:
+		_render_search_candidates()
 
 
 func _submit_search() -> void:
@@ -133,6 +149,7 @@ func _render_current_entry() -> void:
 		"findon":
 			findon_panel.visible = true
 			search_field.text = str(entry.get("query", ""))
+			_render_search_candidates()
 			_render_search_results(search_field.text)
 			call_deferred("_restore_findon_scroll", int(entry.get("scroll", 0)))
 		"page":
@@ -152,12 +169,63 @@ func _render_current_entry() -> void:
 	route_changed.emit(current_route)
 
 
+func _render_search_candidates() -> void:
+	for child in search_candidate_buttons.get_children():
+		child.free()
+	if _catalog == null or _session_state == null:
+		return
+	for candidate_value in _catalog.get_search_candidates():
+		var candidate: Dictionary = candidate_value
+		if not _is_search_candidate_unlocked(candidate):
+			continue
+		var button := Button.new()
+		button.text = str(candidate["text"])
+		button.pressed.connect(_on_search_candidate_pressed.bind(str(candidate["text"])))
+		search_candidate_buttons.add_child(button)
+
+
+func _is_search_candidate_unlocked(candidate: Dictionary) -> bool:
+	match str(candidate.get("unlock_type", "")):
+		"mission_read":
+			return _session_state.mission_read
+		"visited_page":
+			return _session_state.has_visited(str(candidate.get("unlock_id", "")))
+		"observed_content":
+			return _session_state.has_observed(str(candidate.get("unlock_id", "")))
+	return false
+
+
+func _on_search_candidate_pressed(query: String) -> void:
+	_typing_generation += 1
+	_type_candidate_and_search(query, _typing_generation)
+
+
+func _type_candidate_and_search(query: String, generation: int) -> void:
+	search_field.text = ""
+	search_status.text = "‘%s’ 입력 중..." % query
+	for character_index in range(query.length()):
+		if generation != _typing_generation:
+			return
+		search_field.text += query.substr(character_index, 1)
+		await get_tree().create_timer(search_typing_interval_seconds).timeout
+	if generation != _typing_generation:
+		return
+	await get_tree().create_timer(search_submit_delay_seconds).timeout
+	if generation != _typing_generation:
+		return
+	_submit_search()
+
+
+func _cancel_auto_search() -> void:
+	_typing_generation += 1
+
+
 func _render_search_results(query: String) -> void:
 	for child in search_results.get_children():
 		child.free()
 
 	if query.strip_edges().is_empty():
-		search_status.text = "화면에서 확인한 단어를 조합해 검색하세요. 빈 검색은 결과를 표시하지 않습니다."
+		search_status.text = "사용할 수 있는 검색 후보를 선택하세요." if search_candidate_buttons.get_child_count() > 0 else "PostOne 의뢰를 확인하면 첫 검색어를 사용할 수 있습니다."
 		return
 
 	var results := _catalog.search_pages(query)
