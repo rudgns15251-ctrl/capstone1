@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://do4l7ajddoeh7"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
-[ext_resource type="PackedScene" path="res://scenes/ui/desktop.tscn" id="2_desktop"]
+[ext_resource type="Script" uid="uid://raknt6cb1wgr" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://dhdciuqidjlym" path="res://scenes/ui/desktop.tscn" id="2_desktop"]
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" unique_id=792263531]
 script = ExtResource("1_main")
 
-[node name="Desktop" parent="." instance=ExtResource("2_desktop")]
+[node name="Desktop" parent="." unique_id=1250331293 instance=ExtResource("2_desktop")]
+offset_top = -6.0
+offset_bottom = -6.0
